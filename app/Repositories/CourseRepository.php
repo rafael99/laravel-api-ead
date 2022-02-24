@@ -13,10 +13,10 @@ class CourseRepository {
   }
 
   public function getAllCourses() {
-    return Course::get();
+    return $this->entity->get();
   }
 
-  public function getCourse(String $id) {
-    return Course::findOrFail($id);
+  public function getCourse(string $id) {
+    return $this->entity->findOrFail($id);
   }
 }
