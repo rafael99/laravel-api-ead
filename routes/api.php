@@ -20,6 +20,8 @@ Route::get('aulas/{id}', [LessonController::class, 'show']);
 Route::get('suportes', [SupportController::class, 'index']);
 Route::post('suportes', [SupportController::class, 'store']);
 
+Route::post('suportes/{id}/respostas', [SupportController::class, 'createReply']);
+
 Route::get('/', function() {
     return response()->json([
         'success' => true
