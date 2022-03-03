@@ -6,21 +6,31 @@ use App\Http\Controllers\Api\{
     CourseController,
     LessonController,
     ModuleController,
+    ReplySupportController,
     SupportController
 };
+use App\Http\Controllers\Api\Auth\AuthController;
 
-Route::get('cursos', [CourseController::class, 'index']);
-Route::get('cursos/{id}', [CourseController::class, 'show']);
+Route::post('/auth', [AuthController::class, 'auth']);
+Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+Route::get('/me', [AuthController::class, 'me'])->middleware('auth:sanctum');
 
-Route::get('cursos/{id}/modulos', [ModuleController::class, 'index']);
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('/cursos', [CourseController::class, 'index']);
+    Route::get('/cursos/{id}', [CourseController::class, 'show']);
 
-Route::get('modulos/{id}/aulas', [LessonController::class, 'index']);
-Route::get('aulas/{id}', [LessonController::class, 'show']);
+    Route::get('/cursos/{id}/modulos', [ModuleController::class, 'index']);
 
-Route::get('suportes', [SupportController::class, 'index']);
-Route::post('suportes', [SupportController::class, 'store']);
+    Route::get('/modulos/{id}/aulas', [LessonController::class, 'index']);
+    Route::get('/aulas/{id}', [LessonController::class, 'show']);
 
-Route::post('suportes/{id}/respostas', [SupportController::class, 'createReply']);
+    Route::get('/meus-suportes', [SupportController::class, 'mySupports']);
+    Route::get('/suportes', [SupportController::class, 'index']);
+    Route::post('/suportes', [SupportController::class, 'store']);
+
+    Route::post('/respostas', [ReplySupportController::class, 'store']);
+});
+
 
 Route::get('/', function() {
     return response()->json([
