@@ -9,11 +9,17 @@ use App\Http\Controllers\Api\{
     ReplySupportController,
     SupportController
 };
-use App\Http\Controllers\Api\Auth\AuthController;
+use App\Http\Controllers\Api\Auth\{
+    AuthController,
+    ResetPasswordController
+};
 
 Route::post('/auth', [AuthController::class, 'auth']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 Route::get('/me', [AuthController::class, 'me'])->middleware('auth:sanctum');
+
+Route::post('/esqueci-a-senha', [ResetPasswordController::class, 'sendResetLink'])->middleware('guest');
+Route::post('/recuperar-senha', [ResetPasswordController::class, 'resetPassword'])->middleware('guest');
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/cursos', [CourseController::class, 'index']);
